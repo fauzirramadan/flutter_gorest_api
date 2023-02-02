@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -16,7 +17,7 @@ class GeneralRepo {
       Response res = await dio.get(Api.getUserApi,
           options: Api.authorization,
           queryParameters: {"per_page": 15, "page": page, "name": name});
-      return Either.success(resGetUserFromJson(res.data));
+      return Either.success(resGetUserFromJson(jsonEncode(res.data)));
     } catch (e, st) {
       if (kDebugMode) {
         log(st.toString());

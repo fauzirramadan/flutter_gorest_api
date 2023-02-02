@@ -50,7 +50,13 @@ class HomeProvider extends ChangeNotifier {
       }, success: (data) {
         isLoading = false;
         notifyListeners();
-        listUser = data;
+        if (name != null) {
+          listUser = data
+              .where((element) => element.name!.toLowerCase().contains(name))
+              .toList();
+        } else {
+          listUser = data;
+        }
       });
     } catch (e) {
       isLoading = false;
