@@ -10,11 +10,12 @@ import 'package:flutter_gorest_api/data/network/dio_helper.dart';
 import 'package:flutter_gorest_api/data/response/res_get_user.dart';
 
 class GeneralRepo {
-  Future<Either<Failure, List<ResGetUser>>> fetchListUser(int page) async {
+  Future<Either<Failure, List<ResGetUser>>> fetchListUser(int page,
+      {String? name}) async {
     try {
       Response res = await dio.get(Api.getUserApi,
           options: Api.authorization,
-          queryParameters: {"per_page": 15, "page": page});
+          queryParameters: {"per_page": 15, "page": page, "name": name});
       return Either.success(resGetUserFromJson(res.data));
     } catch (e, st) {
       if (kDebugMode) {
