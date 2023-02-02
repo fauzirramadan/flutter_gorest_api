@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gorest_api/data/helper/either.dart';
 import 'package:flutter_gorest_api/data/helper/failure.dart';
 import 'package:flutter_gorest_api/data/repository/general_repo.dart';
+import 'package:flutter_gorest_api/data/response/res_get_user.dart';
 import 'package:flutter_gorest_api/utils/nav_utils.dart';
 import 'package:flutter_gorest_api/utils/notif_utils.dart';
 
 import '../data/model/user.dart';
 
 class UserProvider extends ChangeNotifier {
+  UserProvider(ResGetUser? dataUser) {
+    init(dataUser);
+  }
+
   final TextEditingController _nameC = TextEditingController();
   TextEditingController get nameC => _nameC;
   final TextEditingController _emailC = TextEditingController();
@@ -23,7 +28,17 @@ class UserProvider extends ChangeNotifier {
   final GeneralRepo _repo = GeneralRepo();
   bool isLoading = false;
 
-  Future<void> addOrUpdateUser({bool? isUpdate}) async {
+  void init(ResGetUser? dataUser) {
+    if (dataUser != null) {
+      _nameC.text = dataUser.name ?? "";
+      _emailC.text = dataUser.email ?? "";
+      _genderC.text = dataUser.gender.toString().split("Gender.").last;
+      _statusC.text = dataUser.status.toString().split("Status.").last;
+    }
+    notifyListeners();
+  }
+
+  Future<void> addOrUpdateUser({bool? isUpdate, int? id}) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -32,23 +47,26 @@ class UserProvider extends ChangeNotifier {
           email: _emailC.text,
           gender: _genderC.text,
           status: _statusC.text,
+          id: id,
           isUpdate: isUpdate ?? false);
       res.when(error: (f) {
         isLoading = false;
         notifyListeners();
         log(f.message);
-        NotifUtils.showSnackbar(f.message, backgroundColor: Colors.red);
+        NotifUtils.showSnackbar("Failed", backgroundColor: Colors.red);
       }, success: (data) {
         isLoading = false;
         notifyListeners();
-        NotifUtils.showSnackbar("Success Create User");
+        NotifUtils.showSnackbar(isUpdate == true
+            ? "Success Update Data User"
+            : "Success Create User");
         Nav.back();
       });
     } catch (e) {
       isLoading = false;
       notifyListeners();
       log(e.toString());
-      NotifUtils.showSnackbar(e.toString(), backgroundColor: Colors.red);
+      NotifUtils.showSnackbar("Failed", backgroundColor: Colors.red);
     }
   }
 

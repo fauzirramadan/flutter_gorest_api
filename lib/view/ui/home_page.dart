@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gorest_api/data/response/res_get_user.dart';
 import 'package:flutter_gorest_api/provider/home_provider.dart';
+import 'package:flutter_gorest_api/utils/nav_utils.dart';
+import 'package:flutter_gorest_api/view/ui/form_page.dart';
 import 'package:flutter_gorest_api/view/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +20,7 @@ class HomePage extends StatelessWidget {
           HomeProvider(),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () => Nav.to(FormPage()),
           child: const Icon(Icons.add),
         ),
         body: SafeArea(
@@ -59,6 +61,10 @@ class HomePage extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       final dataUser = prov.listUser[index];
                                       return GestureDetector(
+                                          onTap: () => Nav.to(FormPage(
+                                                isUpdate: true,
+                                                dataUser: dataUser,
+                                              )),
                                           child: myBox(dataUser));
                                     }),
                               ),

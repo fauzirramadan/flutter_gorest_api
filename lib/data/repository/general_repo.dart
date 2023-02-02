@@ -9,6 +9,7 @@ import 'package:flutter_gorest_api/data/model/user.dart';
 import 'package:flutter_gorest_api/data/network/api.dart';
 import 'package:flutter_gorest_api/data/network/dio_helper.dart';
 import 'package:flutter_gorest_api/data/response/res_get_user.dart';
+import 'package:flutter_gorest_api/utils/notif_utils.dart';
 
 class GeneralRepo {
   Future<Either<Failure, List<ResGetUser>>> fetchListUser(int page,
@@ -31,6 +32,7 @@ class GeneralRepo {
       String? email,
       String? gender,
       String? status,
+      int? id,
       bool isUpdate = false}) async {
     try {
       Response res = !isUpdate
@@ -40,13 +42,16 @@ class GeneralRepo {
               "gender": gender,
               "status": status
             })
-          : await dio.put(Api.getUserApi, options: Api.authorization, data: {
-              "name": name,
-              "email": email,
-              "gender": gender,
-              "status": status
-            });
-      return Either.success(userFromJson(res.data));
+          : await dio.put(Api.deleteUserApi(id ?? 0),
+              options: Api.authorization,
+              data: {
+                  "name": name,
+                  "email": email,
+                  "gender": gender,
+                  "status": status
+                });
+
+      return Either.success(userFromJson(jsonEncode(res.data)));
     } catch (e, st) {
       if (kDebugMode) {
         log(st.toString());
