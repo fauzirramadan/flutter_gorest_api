@@ -43,15 +43,25 @@ class HomePage extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                              controller: prov.scrollController,
-                              itemCount: prov.listUser.length,
-                              itemBuilder: (context, index) {
-                                final dataUser = prov.listUser[index];
-                                return GestureDetector(child: myBox(dataUser));
-                              }),
-                        ),
+                        prov.listUser.isEmpty
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    top:
+                                        MediaQuery.of(context).size.height / 4),
+                                child: const Center(
+                                  child: Text("NO DATA :("),
+                                ),
+                              )
+                            : Expanded(
+                                child: ListView.builder(
+                                    controller: prov.scrollController,
+                                    itemCount: prov.listUser.length,
+                                    itemBuilder: (context, index) {
+                                      final dataUser = prov.listUser[index];
+                                      return GestureDetector(
+                                          child: myBox(dataUser));
+                                    }),
+                              ),
                         prov.isLoadMore
                             ? const LoadingCircular()
                             : const SizedBox()
@@ -71,6 +81,7 @@ class HomePage extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.grey[200], borderRadius: BorderRadius.circular(12)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("ID : ${dataUser.id}"),
           const SizedBox(

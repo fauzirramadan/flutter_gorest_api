@@ -14,7 +14,6 @@ class HomeProvider extends ChangeNotifier {
 
   bool isLoading = false;
   bool isLoadMore = false;
-  bool isSearch = false;
   int page = 1;
   final GeneralRepo _repo = GeneralRepo();
   List<ResGetUser> listUser = [];
