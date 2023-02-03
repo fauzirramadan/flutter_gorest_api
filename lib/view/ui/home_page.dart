@@ -46,10 +46,13 @@ class HomePage extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          "PULL TO REFRESH",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
+                        prov.listUser.isEmpty
+                            ? const SizedBox()
+                            : const Text(
+                                "PULL TO REFRESH",
+                                style:
+                                    TextStyle(fontSize: 12, color: Colors.grey),
+                              ),
                         const SizedBox(
                           height: 10,
                         ),
