@@ -32,8 +32,10 @@ class UserProvider extends ChangeNotifier {
     if (dataUser != null) {
       _nameC.text = dataUser.name ?? "";
       _emailC.text = dataUser.email ?? "";
-      _genderC.text = dataUser.gender.toString().split("Gender.").last;
-      _statusC.text = dataUser.status.toString().split("Status.").last;
+      _genderC.text =
+          dataUser.gender.toString().split("Gender.").last.toLowerCase();
+      _statusC.text =
+          dataUser.status.toString().split("Status.").last.toLowerCase();
     }
     notifyListeners();
   }
@@ -53,13 +55,16 @@ class UserProvider extends ChangeNotifier {
         isLoading = false;
         notifyListeners();
         log(f.message);
-        NotifUtils.showSnackbar("Failed", backgroundColor: Colors.red);
+        NotifUtils.showSnackbar("Email has been taken",
+            backgroundColor: Colors.red);
       }, success: (data) {
         isLoading = false;
         notifyListeners();
-        NotifUtils.showSnackbar(isUpdate == true
-            ? "Success Update Data User"
-            : "Success Create User");
+        NotifUtils.showSnackbar(
+            isUpdate == true
+                ? "Success Update Data User"
+                : "Success Create User",
+            backgroundColor: Colors.green);
         Nav.back();
       });
     } catch (e) {
@@ -78,7 +83,8 @@ class UserProvider extends ChangeNotifier {
       if (res?.statusCode == 204) {
         isLoading = false;
         notifyListeners();
-        NotifUtils.showSnackbar("Success delete user");
+        NotifUtils.showSnackbar("Success delete user",
+            backgroundColor: Colors.green);
         Nav.back();
       }
     } catch (e) {

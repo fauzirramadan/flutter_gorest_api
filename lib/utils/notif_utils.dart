@@ -6,10 +6,11 @@ class NotifUtils {
       {Color? backgroundColor, SnackBarAction? action}) {
     messengerKey.currentState?.showSnackBar(
       SnackBar(
-        behavior: SnackBarBehavior.floating,
         backgroundColor: backgroundColor,
         action: action,
-        content: Text(message),
+        content: Text(
+          message,
+        ),
       ),
     );
   }

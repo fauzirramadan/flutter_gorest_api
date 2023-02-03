@@ -6,6 +6,7 @@ import 'package:flutter_gorest_api/data/helper/failure.dart';
 import 'package:flutter_gorest_api/data/repository/general_repo.dart';
 import 'package:flutter_gorest_api/data/response/res_get_user.dart';
 import 'package:flutter_gorest_api/utils/notif_utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeProvider extends ChangeNotifier {
   HomeProvider() {
@@ -22,6 +23,9 @@ class HomeProvider extends ChangeNotifier {
   TextEditingController get searchController => _searchController;
   final ScrollController _scrollController = ScrollController();
   ScrollController get scrollController => _scrollController;
+
+  final RefreshController _refreshController = RefreshController();
+  RefreshController get refreshController => _refreshController;
 
   void init() async {
     await getUser();

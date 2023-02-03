@@ -5,6 +5,7 @@ import 'package:flutter_gorest_api/utils/nav_utils.dart';
 import 'package:flutter_gorest_api/view/ui/form_page.dart';
 import 'package:flutter_gorest_api/view/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../widgets/textfield.dart';
 
@@ -45,6 +46,13 @@ class HomePage extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
+                        const Text(
+                          "PULL TO REFRESH",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         prov.listUser.isEmpty
                             ? Padding(
                                 padding: EdgeInsets.only(
@@ -55,18 +63,26 @@ class HomePage extends StatelessWidget {
                                 ),
                               )
                             : Expanded(
-                                child: ListView.builder(
-                                    controller: prov.scrollController,
-                                    itemCount: prov.listUser.length,
-                                    itemBuilder: (context, index) {
-                                      final dataUser = prov.listUser[index];
-                                      return GestureDetector(
-                                          onTap: () => Nav.to(FormPage(
-                                                isUpdate: true,
-                                                dataUser: dataUser,
-                                              )),
-                                          child: myBox(dataUser));
-                                    }),
+                                child: SmartRefresher(
+                                  header: const WaterDropMaterialHeader(),
+                                  controller: prov.refreshController,
+                                  onRefresh: () async {
+                                    await prov.getUser();
+                                    prov.refreshController.refreshCompleted();
+                                  },
+                                  child: ListView.builder(
+                                      controller: prov.scrollController,
+                                      itemCount: prov.listUser.length,
+                                      itemBuilder: (context, index) {
+                                        final dataUser = prov.listUser[index];
+                                        return GestureDetector(
+                                            onTap: () => Nav.to(FormPage(
+                                                  isUpdate: true,
+                                                  dataUser: dataUser,
+                                                )),
+                                            child: myBox(dataUser));
+                                      }),
+                                ),
                               ),
                         prov.isLoadMore
                             ? const LoadingCircular()
