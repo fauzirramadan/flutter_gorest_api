@@ -55,7 +55,8 @@ class HomeProvider extends ChangeNotifier {
         notifyListeners();
         if (name != null) {
           listUser = data
-              .where((element) => element.name!.toLowerCase().contains(name))
+              .where((element) =>
+                  element.name!.toLowerCase().contains(name.toLowerCase()))
               .toList();
         } else {
           listUser = data;

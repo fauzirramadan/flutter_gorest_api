@@ -47,8 +47,8 @@ class UserProvider extends ChangeNotifier {
       Either<Failure, User> res = await _repo.addOrUpdateUser(
           name: _nameC.text,
           email: _emailC.text,
-          gender: _genderC.text,
-          status: _statusC.text,
+          gender: _genderC.text.toLowerCase(),
+          status: _statusC.text.toLowerCase(),
           id: id,
           isUpdate: isUpdate ?? false);
       res.when(error: (f) {
